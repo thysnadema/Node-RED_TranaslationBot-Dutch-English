@@ -1,0 +1,600 @@
+[
+    {
+        "id": "5323667f.796a78",
+        "type": "tab",
+        "label": "Telegram",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e8769598.5d34f8",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Prepare text",
+        "func": "var chatID = msg.chatId.toString();\nvar lang = global.get(chatID) || 0;\n\nmsg.payload = msg.transcription;\n\n  \nif (lang === 0){\n    \nif (count === 0 && msg.payload === 'مرحبا' ||msg.payload === \"يا ترجمات \" || msg.payload === \"مرحبا \" ||msg.payload === \"ترجمات \"){\n\n    global.set(chatID,1);\n    msg.payloadtrans = \"Done1\";\n    return [msg,null,null,null,null,null,null];\n    \n}\nelse if ( msg.payload === \"Hey Watson \"|| msg.payload === \"Hello \"|| msg.payload === \"hello \"|| msg.payload === \"hello\"){\n\n    global.set(chatID,2);\n    msg.payloadtrans = \"Done2\";\n\n    return [null,msg,null,null,null,null,null];\n}\nelse if (count === 0 && msg.payload === 'Hola'|| msg.payload === 'Hola '||msg.payload === 'hola'){\n    global.set(chatID,3);\n    msg.payloadtrans = \"Done3\";\n\n    return [null,null,msg,null,null,null,null];\n}\nelse if (count === 0 && msg.payload === 'Bonjour' ||msg.payload === \"bon jour\" || msg.payload ===\"bonjour \" ){\n    global.set(chatID,4);\n    msg.payloadtrans = \"Done4\";\n\n    return [null,null,null,msg,null,null,null];\n    \n}\nelse if (count === 0 && msg.payload == \"こんにちは\" || msg.payload == \"ありがとう\"){\n    global.set(chatID,5);\n    msg.payloadtrans = \"Done5\";\n    \n    return [null,null,null,null,msg,null,null];\n    \n}\nelse if (count === 0 && msg.payload == \"hallo\" || msg.payload == \"Hallo\"){\n    global.set(chatID,6);\n    msg.payloadtrans = \"Done6\";\n    \n    return [null,null,null,null,null,msg,null];\n    \n}else{\n    \n    var countError = global.get('countError',chatID) || 0;\n    var countType = global.get('countType',chatID) || 0;\n    countError++;\n    global.set('countError',countError,chatID);\n    \n    if (countError === 6||countType === 1){\n        \n        msg.payload = \"Sorry I couldn't understand you. could you please repeat again\";\n    return [null,null,null,null,null,null,msg];\n    }\n    \n}\n}else if (lang > 6){\n    \n    msg.payload = \"Sorry I couldn't understand you. Could you please repeat again\";\n\n    return [null,null,null,null,null,null,msg];\n    \n}else{\n    \n       \n    \n    if (lang === 1){\n return [msg,null,null,null,null,null,null]\n}else if (lang === 2){\n return [null,msg,null,null,null,null,null]\n}else if (lang === 3){\n return [null,null,msg,null,null,null,null]\n}else if (lang === 4){\n return [null,null,null,msg,null,null,null]\n}else if (lang === 5){\n return [null,null,null,null,msg,null,null]\n}else if (lang === 6){\n return [null,null,null,null,null,msg,null]\n}\n}\n    \n\n\n",
+        "outputs": 7,
+        "noerr": 0,
+        "x": 694,
+        "y": 284,
+        "wires": [
+            [],
+            [
+                "68560690.397fd8"
+            ],
+            [
+                "81289337.b9e06"
+            ],
+            [],
+            [],
+            [],
+            [
+                "8467a821.ea9028",
+                "6a67d004.91daf"
+            ]
+        ]
+    },
+    {
+        "id": "92ca861c.0405b8",
+        "type": "watson-speech-to-text",
+        "z": "5323667f.796a78",
+        "name": "English",
+        "alternatives": 1,
+        "speakerlabels": false,
+        "smartformatting": false,
+        "lang": "fr-FR",
+        "langhidden": "fr-FR",
+        "langcustom": "NoCustomisationSetting",
+        "langcustomhidden": "",
+        "custom-weight": "",
+        "band": "BroadbandModel",
+        "bandhidden": "BroadbandModel",
+        "keywords": "",
+        "keywords-threshold": "",
+        "word-confidence": false,
+        "password": "",
+        "apikey": "",
+        "payload-response": false,
+        "streaming-mode": false,
+        "streaming-mute": true,
+        "auto-connect": false,
+        "discard-listening": false,
+        "disable-precheck": false,
+        "default-endpoint": true,
+        "service-endpoint": "https://stream.watsonplatform.net/speech-to-text/api",
+        "x": 430,
+        "y": 380,
+        "wires": [
+            [
+                "e002c28c.ad52e"
+            ]
+        ]
+    },
+    {
+        "id": "bd4c7d90.235a6",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Prepare Voice",
+        "func": "\nvar chatID =  msg.chatId.toString()|| '000000000';\n\nvar lang = global.get(chatID) || 0;\n\nif (lang === 0){\n return [null,null,null,null,null,null,msg]\n}else if (lang === 1){\n return [msg,null,null,null,null,null,null]\n}else if (lang === 2){\n return [null,msg,null,null,null,null,null]\n}else if (lang === 3){\n return [null,null,msg,null,null,null,null]\n}else if (lang === 4){\n return [null,null,null,msg,null,null,null]\n}else if (lang === 5){\n return [null,null,null,null,msg,null,null]\n}else if (lang === 6){\n return [null,null,null,null,null,msg,null]\n}",
+        "outputs": 7,
+        "noerr": 0,
+        "x": 153.00000762939453,
+        "y": 366.75000762939453,
+        "wires": [
+            [],
+            [],
+            [],
+            [
+                "92ca861c.0405b8"
+            ],
+            [],
+            [],
+            [
+                "92ca861c.0405b8"
+            ]
+        ]
+    },
+    {
+        "id": "68560690.397fd8",
+        "type": "watson-translator",
+        "z": "5323667f.796a78",
+        "name": "English to Dutch Translation",
+        "action": "translate",
+        "basemodel": "en-nl",
+        "domain": "general",
+        "srclang": "en",
+        "destlang": "nl",
+        "password": "",
+        "apikey": "",
+        "custom": "",
+        "domainhidden": "general",
+        "srclanghidden": "en",
+        "destlanghidden": "nl",
+        "basemodelhidden": "en-nl",
+        "customhidden": "",
+        "filetype": "forcedglossary",
+        "trainid": "",
+        "lgparams2": true,
+        "neural": false,
+        "default-endpoint": true,
+        "service-endpoint": "https://gateway.watsonplatform.net/language-translator/api",
+        "x": 980,
+        "y": 180,
+        "wires": [
+            [
+                "8467a821.ea9028"
+            ]
+        ]
+    },
+    {
+        "id": "81289337.b9e06",
+        "type": "watson-translator",
+        "z": "5323667f.796a78",
+        "name": "Dutch Translation",
+        "action": "translate",
+        "basemodel": "en-nl",
+        "domain": "general",
+        "srclang": "nl",
+        "destlang": "en",
+        "password": "",
+        "apikey": "",
+        "custom": "",
+        "domainhidden": "general",
+        "srclanghidden": "nl",
+        "destlanghidden": "en",
+        "basemodelhidden": "en-nl",
+        "customhidden": "",
+        "filetype": "forcedglossary",
+        "trainid": "",
+        "lgparams2": true,
+        "neural": false,
+        "default-endpoint": true,
+        "service-endpoint": "https://gateway.watsonplatform.net/language-translator/api",
+        "x": 989.5000381469727,
+        "y": 400.25001525878906,
+        "wires": [
+            [
+                "276ca846.19eed8",
+                "8467a821.ea9028"
+            ]
+        ]
+    },
+    {
+        "id": "276ca846.19eed8",
+        "type": "watson-text-to-speech",
+        "z": "5323667f.796a78",
+        "name": "",
+        "lang": "en-US",
+        "langhidden": "en-US",
+        "langcustom": "NoCustomisationSetting",
+        "langcustomhidden": "",
+        "voice": "en-US_LisaVoice",
+        "voicehidden": "en-US_LisaVoice",
+        "format": "audio/wav",
+        "password": "",
+        "apikey": "",
+        "payload-response": true,
+        "default-endpoint": true,
+        "service-endpoint": "https://stream.watsonplatform.net/text-to-speech/api",
+        "x": 1316.7500457763672,
+        "y": 213.7500057220459,
+        "wires": [
+            [
+                "34e70b10.cf1974"
+            ]
+        ]
+    },
+    {
+        "id": "e002c28c.ad52e",
+        "type": "link out",
+        "z": "5323667f.796a78",
+        "name": "voice Input",
+        "links": [
+            "1cd2c7b8.5ccb18"
+        ],
+        "x": 558,
+        "y": 321,
+        "wires": []
+    },
+    {
+        "id": "1cd2c7b8.5ccb18",
+        "type": "link in",
+        "z": "5323667f.796a78",
+        "name": "Text_to_Translate",
+        "links": [
+            "e002c28c.ad52e",
+            "41b16c10.274174",
+            "a3bafb66.abf318",
+            "b68bd01e.f67bb",
+            "22e8db7e.59c7a4",
+            "dd601983.ec6fc8",
+            "7fcedbb7.f52f84"
+        ],
+        "x": 572,
+        "y": 273,
+        "wires": [
+            [
+                "e8769598.5d34f8",
+                "4fa061fe.f194f"
+            ]
+        ]
+    },
+    {
+        "id": "a03792ba.2f9c4",
+        "type": "link out",
+        "z": "5323667f.796a78",
+        "name": "Translated",
+        "links": [
+            "1a2e4736.e78529",
+            "a0efee6e.f7b07",
+            "6c20f917.098548"
+        ],
+        "x": 1424,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "34e70b10.cf1974",
+        "type": "link out",
+        "z": "5323667f.796a78",
+        "name": "voiceSend",
+        "links": [
+            "b9adf3.40bc821",
+            "8d438b3d.cdfd58"
+        ],
+        "x": 1346.7500457763672,
+        "y": 162.7500057220459,
+        "wires": []
+    },
+    {
+        "id": "8467a821.ea9028",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Check Message ID",
+        "func": "if (!isNaN(msg.chatId)){\n    return msg;\n}else{\n    var chatID = global.get('chatID',msg.payload.chatId.toString()) || 520109971;\n    msg.chatId = chatID;\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1399,
+        "y": 340,
+        "wires": [
+            [
+                "a03792ba.2f9c4"
+            ]
+        ]
+    },
+    {
+        "id": "4fa061fe.f194f",
+        "type": "debug",
+        "z": "5323667f.796a78",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "complete": "transcription",
+        "x": 690,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "804f8a97.8ffde8",
+        "type": "http request",
+        "z": "5323667f.796a78",
+        "name": "Fetch the Audio",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": false,
+        "url": "",
+        "tls": "",
+        "proxy": "",
+        "x": 223,
+        "y": 251,
+        "wires": [
+            [
+                "bd4c7d90.235a6"
+            ]
+        ]
+    },
+    {
+        "id": "e2636e5b.37625",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Extract file_path",
+        "func": "audiourl = encodeURI(msg.payload.weblink);\nmsg.url=audiourl;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 289,
+        "y": 201,
+        "wires": [
+            [
+                "804f8a97.8ffde8"
+            ]
+        ]
+    },
+    {
+        "id": "75a84cb.e547cb4",
+        "type": "link in",
+        "z": "5323667f.796a78",
+        "name": "",
+        "links": [
+            "edeac4c2.dca6e8",
+            "8286172a.ae6bf8"
+        ],
+        "x": 158,
+        "y": 201,
+        "wires": [
+            [
+                "e2636e5b.37625"
+            ]
+        ]
+    },
+    {
+        "id": "d4ddb863.f36318",
+        "type": "telegram receiver",
+        "z": "5323667f.796a78",
+        "name": "",
+        "bot": "773da268.095a6c",
+        "saveDataDir": "",
+        "x": 189.25000762939453,
+        "y": 675.2500419616699,
+        "wires": [
+            [
+                "3ca0748e.10c9fc"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "aedb44fb.0947f8",
+        "type": "telegram sender",
+        "z": "5323667f.796a78",
+        "name": "",
+        "bot": "773da268.095a6c",
+        "x": 1130,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3ca0748e.10c9fc",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Check Message",
+        "func": "\nmsg.chatId= msg.payload.chatId;\nif (msg.payload.type === \"voice\"){\n        return [null, msg,null];\n}else{\n\nmsg.payload = msg.payload.content;\nmsg.transcription  = msg.payload;\n\nif (msg.payload === \"RestLang\"|| msg.payload === \"/start\" ){\n    global.set(msg.chatId,0);\n    msg.payloadtran= \"test1\";\n    msg.payload = \"Welcome to Terjmat!! \\nTerjmat is a translation app used IBM services to make the translation smart and easy. \\nIn this version you can use translation in the following: \\n- Arabic to English\\n- English to Arabic\\n- Spanish to English\\n- French to English\\n- Japanese to English\\nand we will support more language in the future.\\nTo start the translation try to say \\nHello, مرحبا, Hola, Bonjour, こんにちは \\nby your voice to set the default language. \\nor type anything in the supported language and the app will identify the language then translate it. \";\n    return [null,null, msg];\n}else{\n    \n    \nreturn [msg,null,null];\n}\n}",
+        "outputs": 3,
+        "noerr": 0,
+        "x": 401.25000762939453,
+        "y": 679.2500419616699,
+        "wires": [
+            [
+                "23b15678.b195ea"
+            ],
+            [
+                "8286172a.ae6bf8"
+            ],
+            [
+                "a600920e.c906f"
+            ]
+        ]
+    },
+    {
+        "id": "98d48215.c7222",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Prepare Mesaage",
+        "func": "msg.payload = {\n    chatId : msg.chatId,\n    type : \"message\",\n    content : msg.payload\n    \n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 914.5000228881836,
+        "y": 685.2500419616699,
+        "wires": [
+            [
+                "aedb44fb.0947f8"
+            ]
+        ]
+    },
+    {
+        "id": "7fcedbb7.f52f84",
+        "type": "link out",
+        "z": "5323667f.796a78",
+        "name": "Telegram_Receiver",
+        "links": [
+            "1cd2c7b8.5ccb18"
+        ],
+        "x": 597.2500076293945,
+        "y": 622.2500419616699,
+        "wires": []
+    },
+    {
+        "id": "6c20f917.098548",
+        "type": "link in",
+        "z": "5323667f.796a78",
+        "name": "Telegram_Sender",
+        "links": [
+            "a03792ba.2f9c4",
+            "a600920e.c906f"
+        ],
+        "x": 782.5000228881836,
+        "y": 697.2500419616699,
+        "wires": [
+            [
+                "98d48215.c7222"
+            ]
+        ]
+    },
+    {
+        "id": "8d438b3d.cdfd58",
+        "type": "link in",
+        "z": "5323667f.796a78",
+        "name": "",
+        "links": [
+            "34e70b10.cf1974"
+        ],
+        "x": 779.5000228881836,
+        "y": 645.2500419616699,
+        "wires": [
+            [
+                "9addeef7.e2faa"
+            ]
+        ]
+    },
+    {
+        "id": "9addeef7.e2faa",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Prepare V Mesaage",
+        "func": "msg.payload = {\n    chatId : msg.chatId,\n    type : \"voice\",\n    content : msg.payload\n    \n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 914.5000228881836,
+        "y": 650.2500419616699,
+        "wires": [
+            [
+                "aedb44fb.0947f8"
+            ]
+        ]
+    },
+    {
+        "id": "8286172a.ae6bf8",
+        "type": "link out",
+        "z": "5323667f.796a78",
+        "name": "Telegram_Voice_Receiver",
+        "links": [
+            "1a1931c5.ec13de",
+            "9f94d137.f45a7",
+            "9f58b470.8fad68",
+            "75a84cb.e547cb4"
+        ],
+        "x": 597.2500076293945,
+        "y": 660.2500419616699,
+        "wires": []
+    },
+    {
+        "id": "23b15678.b195ea",
+        "type": "watson-language-translator-identify",
+        "z": "5323667f.796a78",
+        "name": "",
+        "default-endpoint": true,
+        "service-endpoint": "https://gateway.watsonplatform.net/language-translator/api",
+        "x": 199.25000762939453,
+        "y": 624.2500419616699,
+        "wires": [
+            [
+                "cd995690.8406d8"
+            ]
+        ]
+    },
+    {
+        "id": "a600920e.c906f",
+        "type": "link out",
+        "z": "5323667f.796a78",
+        "name": "",
+        "links": [
+            "6c20f917.098548"
+        ],
+        "x": 597.2500076293945,
+        "y": 700.2500419616699,
+        "wires": []
+    },
+    {
+        "id": "cd995690.8406d8",
+        "type": "function",
+        "z": "5323667f.796a78",
+        "name": "Set Language",
+        "func": "var chatID = msg.chatId.toString();\n\nmsg.transcription  = msg.payload;\n\n if (msg.lang.language === \"ar\"){\n    global.set(chatID,1);\n\n return msg;\n}else if (msg.lang.language === \"en\"){\n    \n    global.set(chatID,2);\n\n return msg;\n}else if (msg.lang.language === \"nl\"){\n    \n    global.set(chatID,3);\n\n return msg;\n}else if (msg.lang.language === \"fr\"){\n    \n    global.set(chatID,4);\n\n return msg;\n}else if (msg.lang.language === \"ja\"){\n    \n    global.set(chatID,5);\n\n return msg;\n}else if (msg.lang.language === \"de\"){\n    \n    global.set(chatID,6);\n\n return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 401.25000762939453,
+        "y": 622.2500419616699,
+        "wires": [
+            [
+                "7fcedbb7.f52f84"
+            ]
+        ]
+    },
+    {
+        "id": "6a67d004.91daf",
+        "type": "debug",
+        "z": "5323667f.796a78",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "complete": "false",
+        "x": 690,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "6a41839c.146c4c",
+        "type": "comment",
+        "z": "5323667f.796a78",
+        "name": "Receive text or voice message from Telegram",
+        "info": "",
+        "x": 278.75000762939453,
+        "y": 569.2500419616699,
+        "wires": []
+    },
+    {
+        "id": "11daf024.e76c7",
+        "type": "comment",
+        "z": "5323667f.796a78",
+        "name": "Send text or voice message to Telegram",
+        "info": "",
+        "x": 922.5000228881836,
+        "y": 596.2500419616699,
+        "wires": []
+    },
+    {
+        "id": "c433397f.8cbad8",
+        "type": "comment",
+        "z": "5323667f.796a78",
+        "name": "Check the voice and convert it to text",
+        "info": "",
+        "x": 293,
+        "y": 138,
+        "wires": []
+    },
+    {
+        "id": "fe51f657.725998",
+        "type": "comment",
+        "z": "5323667f.796a78",
+        "name": "Translate the text and convert it to voice",
+        "info": "",
+        "x": 560,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "f7df479b.834c28",
+        "type": "comment",
+        "z": "5323667f.796a78",
+        "name": "Adding Another Language (double click to read)",
+        "info": "To add a new language comnplete the following steps:\n**Voice to text section:**\n1. Copy and paste a new voice to text light green node, double click it, and switch to the desired language\n2. Add another output to \"Prepare Voice\" function and connect it to the voice to text node and the voice node to the voice input link\n**Text to voice section:**\n3. Copy and paste new text translation nodes (blue) - the language to english and english to the language\n4. Add another output to \"Prepare Text\" function and connect it to the translation nodes (all english to language nodes connect to the same point) and connect the translation nodes to the \"Check Message ID\" function and language to english node to the text to speech node\n5. \"Prepare Text\" function needs to be fixed to work with the new total number of working languages and rewired\n**Receive text to voice message section:**\n6. Add another language identifier to the \"Set Language\" function",
+        "x": 669.3750076293945,
+        "y": 527.9999990463257,
+        "wires": [],
+        "icon": "node-red/alert.png"
+    },
+    {
+        "id": "773da268.095a6c",
+        "type": "telegram bot",
+        "z": "",
+        "botname": "",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "",
+        "socksusername": "",
+        "sockspassword": "",
+        "bothost": "",
+        "localbotport": "",
+        "publicbotport": "",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "verboselogging": false
+    }
+]
